@@ -12,33 +12,35 @@
     <parent>
         <groupId>es.iti.wakamiti</groupId>
         <artifactId>wakamiti-plugin-starter</artifactId>
-        <version>${revision}</version>
-        <relativePath>../../wakamiti-plugin-starter</relativePath>
+        <version>2.3.3</version>
     </parent>
 
 
     <artifactId>jmeter-wakamiti-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>11</maven.compiler.release>
+    </properties>
+
 
     <name>[Wakamiti Plugin] jmeter</name>
     <description>Jmeter steps for Wakamiti</description>
-    <inceptionYear>2023</inceptionYear>
+    <inceptionYear>2024</inceptionYear>
 
 
     <dependencies>
         <dependency>
-            <groupId>es.iti.wakamiti</groupId>
-            <artifactId>wakamiti-api</artifactId>
-            <version>2.3.3</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
         </dependency>
-
-
-        <!-- test -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
+            <groupId>us.abstracta.jmeter</groupId>
+            <artifactId>jmeter-java-dsl</artifactId>
+            <version>1.25.3</version>
         </dependency>
         <dependency>
             <groupId>es.iti.wakamiti</groupId>
@@ -53,7 +55,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-
 
 </project>

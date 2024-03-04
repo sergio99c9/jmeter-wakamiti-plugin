@@ -4,7 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package es.iti.wakamiti;
+package es.iti.wakamiti.plugins.jmeter;
 
 
 
