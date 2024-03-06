@@ -10,6 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static us.abstracta.jmeter.javadsl.JmeterDsl.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 import us.abstracta.jmeter.javadsl.core.TestPlanStats;
 import es.iti.commons.jext.Extension;
@@ -28,23 +29,16 @@ public class JMeterStepContributor implements StepContributor {
     private final Logger logger = WakamitiLogger.forClass(JMeterStepContributor.class);
 
 
-    private String baseUrl;
-    private int usuarios;
-    private int duracion;
-    private int incrementoUsuarios;
-    private int maxUsuarios;
-    private int usuariosPico;
-    private int usuariosFueraPico;
-    private int numeroPicos;
-    private TestPlanStats lastTestStats;
+    protected String baseUrl;
+    public TestPlanStats lastTestStats;
 
 
-
-    @Step(value = "jmeter.define.baseURL", args = "baseUrl:text")
-    public void setBaseUrl(String baseUrl) throws IOException {
+    @Step(value = "jmeter.define.baseURL")
+    public void setBaseURL(String baseUrl) {
         this.baseUrl = baseUrl;
     }
-    @Step(value = "jmeter.define.loadtest", args = {"usuarios:int", "duracion:int"})
+
+    /*@Step(value = "jmeter.define.loadtest", args = {"usuarios:int", "duracion:int"})
     public void PruebaCargaBasica(int usuarios, int duracion) throws IOException {
 
         this.usuarios = usuarios;
@@ -52,7 +46,7 @@ public class JMeterStepContributor implements StepContributor {
 
     }
 
-    @Step(value = "jmeter.define.stresstest", args = {"usuarios:int", "incrementoUsuarios:int", "maxUsuarios:int", "duracion:int"})
+    /*@Step(value = "jmeter.define.stresstest", args = {"usuarios:int", "incrementoUsuarios:int", "maxUsuarios:int", "duracion:int"})
     public void PruebaEstresBasica(int usuarios, int maxUsuarios, int incrementoUsuarios, int duracion) throws IOException {
 
         this.usuarios = usuarios;
@@ -71,20 +65,21 @@ public class JMeterStepContributor implements StepContributor {
         this.usuariosFueraPico = usuariosFueraPico;
         this.duracion = duracion;
 
-    }
-    @Step(value = "jmeter.test.loadtest")
-    public void EjecutarPruebaCarga() throws IOException {
+    }*/
+
+    @Step(value = "jmeter.test.loadtest", args = {"usuarios:int", "duracion:int"})
+    public void EjecutarPruebaCarga(Integer usuarios, Integer duracion) throws IOException {
 
          lastTestStats = testPlan(threadGroup(usuarios, Duration.ofMinutes(duracion), httpSampler(baseUrl)))
                 .run();
 
     }
-    @Step(value = "jmeter.test.stresstest")
-    public void EjecutarPruebaEstres(int duracionTest) throws IOException {
+    @Step(value = "jmeter.test.stresstest", args = {"usuarios:int", "incrementoUsuarios:int", "maxUsuarios:int", "duracion:int"})
+    public void EjecutarPruebaEstres(Integer usuarios, Integer incrementoUsuarios, Integer maxUsuarios, Integer duracion) throws IOException {
 
         // Calcula el número total de pasos necesarios para llegar de 'usuarios' a 'maxUsuarios' en incrementos de 'incrementoUsuarios'
         int totalPasos = (maxUsuarios - usuarios) / incrementoUsuarios;
-        // Crea el thread group comenzando con 'usuarios', incrementando en 'incrementoUsuarios' usuarios cada 'duracion'
+        // Crea el grupo de hilos con los usuarios iniciales, incrementando usuarios cada periodo de tiempo especificado
         DslDefaultThreadGroup threadGroup = threadGroup();
         int usuariosActuales = usuarios;
         for (int paso = 0; paso <= totalPasos; paso++) {
@@ -98,11 +93,11 @@ public class JMeterStepContributor implements StepContributor {
         // Ejecutar el plan de prueba
         lastTestStats = testPlan(
                 threadGroup.children(
-                        httpSampler(baseUrl) // Usa 'baseUrl' definido previamente
+                        httpSampler(baseUrl)
                 )).run();
     }
-    @Step(value = "jmeter.test.peaktest")
-    public void EjecutarPruebaPico(int duracionTest) throws IOException {
+    @Step(value = "jmeter.test.peaktest", args = {"numeroPicos:int", "usuariosPico:int", "usuariosFueraPico:int", "duracion:int"})
+    public void EjecutarPruebaPico(Integer numeroPicos, Integer usuariosPico, Integer usuariosFueraPico, Integer duracion) throws IOException {
 
         DslDefaultThreadGroup threadGroup = threadGroup(
                 usuariosFueraPico,
@@ -110,16 +105,18 @@ public class JMeterStepContributor implements StepContributor {
         );
 
         for (int i = 0; i < numeroPicos; i++) {
-            // Sube rápidamente al pico
+            // Sube al pico
             threadGroup = threadGroup.rampTo(usuariosPico, Duration.ofSeconds(20));
-            // Inmediatamente baja al número de usuarios fuera del pico
+            // Baja al número de usuarios fuera del pico
             threadGroup = threadGroup.rampTo(usuariosFueraPico, Duration.ofSeconds(20));
-            // Mantén el número de usuarios fuera del pico durante la duración especificada
+            // Mantiene el número de usuarios fuera del pico
             threadGroup = threadGroup.holdFor(Duration.ofMinutes(duracion));
         }
 
+        //Disminuir a 0 'usuarios'
         threadGroup = threadGroup.rampTo(0, Duration.ofSeconds(20));
 
+        // Ejecutar el plan de prueba
         lastTestStats = testPlan(
                 threadGroup.children(
                         httpSampler(baseUrl) // Utiliza la URL base definida previamente
@@ -127,7 +124,7 @@ public class JMeterStepContributor implements StepContributor {
 
     }
     @Step(value = "jmeter.test.percentile99", args = "duracionTest:int")
-    public void setPruebaPercentil(int duracionTest) throws IOException {
+    public void setPruebaPercentil(Integer duracionTest) throws IOException {
 
         if (lastTestStats == null) {
             throw new IllegalStateException("No hay resultados de pruebas almacenados para verificar el percentil 99.");
