@@ -2,11 +2,11 @@
 <module type="JAVA_MODULE" version="4">
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/jmeter-wakamiti-plugin/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jmeter-wakamiti-plugin/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/jmeter-wakamiti-plugin/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/jmeter-wakamiti-plugin/src/test/resources" type="java-test-resource" />
-      <excludeFolder url="file://$MODULE_DIR$/jmeter-wakamiti-plugin/target" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
   </component>
   <component name="CheckStyle-IDEA-Module" serialisationVersion="2">

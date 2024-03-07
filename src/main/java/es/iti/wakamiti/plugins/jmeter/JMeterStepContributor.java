@@ -70,7 +70,8 @@ public class JMeterStepContributor implements StepContributor {
     @Step(value = "jmeter.test.loadtest", args = {"usuarios:int", "duracion:int"})
     public void EjecutarPruebaCarga(Integer usuarios, Integer duracion) throws IOException {
 
-         lastTestStats = testPlan(threadGroup(usuarios, Duration.ofMinutes(duracion), httpSampler(baseUrl)))
+         lastTestStats = testPlan(threadGroup(usuarios, Duration.ofMinutes(duracion), httpSampler(baseUrl)),
+                 influxDbListener("http://localhost:8086/write?db=jmeter"))
                 .run();
 
     }
@@ -83,7 +84,7 @@ public class JMeterStepContributor implements StepContributor {
         DslDefaultThreadGroup threadGroup = threadGroup();
         int usuariosActuales = usuarios;
         for (int paso = 0; paso <= totalPasos; paso++) {
-            threadGroup = threadGroup.rampToAndHold(usuariosActuales, Duration.ofSeconds(30), Duration.ofMinutes(duracion));
+            threadGroup = threadGroup.rampToAndHold(usuariosActuales, Duration.ofSeconds(20), Duration.ofMinutes(duracion));
             usuariosActuales += incrementoUsuarios;
         }
 
@@ -94,7 +95,8 @@ public class JMeterStepContributor implements StepContributor {
         lastTestStats = testPlan(
                 threadGroup.children(
                         httpSampler(baseUrl)
-                )).run();
+                ),
+                influxDbListener("http://localhost:8086/write?db=jmeter")).run();
     }
     @Step(value = "jmeter.test.peaktest", args = {"numeroPicos:int", "usuariosPico:int", "usuariosFueraPico:int", "duracion:int"})
     public void EjecutarPruebaPico(Integer numeroPicos, Integer usuariosPico, Integer usuariosFueraPico, Integer duracion) throws IOException {
@@ -120,7 +122,8 @@ public class JMeterStepContributor implements StepContributor {
         lastTestStats = testPlan(
                 threadGroup.children(
                         httpSampler(baseUrl) // Utiliza la URL base definida previamente
-                )).run();
+                ),
+                influxDbListener("http://localhost:8086/write?db=jmeter")).run();
 
     }
     @Step(value = "jmeter.test.percentile99", args = "duracionTest:int")
