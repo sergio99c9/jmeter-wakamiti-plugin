@@ -84,7 +84,7 @@ public class JMeterStepContributor implements StepContributor {
         DslDefaultThreadGroup threadGroup = threadGroup();
         int usuariosActuales = usuarios;
         for (int paso = 0; paso <= totalPasos; paso++) {
-            threadGroup = threadGroup.rampToAndHold(usuariosActuales, Duration.ofSeconds(20), Duration.ofMinutes(duracion));
+            threadGroup = threadGroup.rampToAndHold(usuariosActuales, Duration.ofSeconds(10), Duration.ofMinutes(duracion));
             usuariosActuales += incrementoUsuarios;
         }
 
