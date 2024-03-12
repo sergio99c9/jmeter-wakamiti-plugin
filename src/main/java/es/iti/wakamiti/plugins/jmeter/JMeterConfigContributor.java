@@ -22,8 +22,16 @@ import es.iti.wakamiti.api.extensions.ConfigContributor;
 )
 public class JMeterConfigContributor implements ConfigContributor<JMeterStepContributor> {
 
+    private static final String INFLUXDB_ENABLED = "jmeter.output.influxdb.enabled";
+    private static final String CSV_ENABLED = "jmeter.output.csv.enabled";
+    private static final String INFLUXDB_URL = "jmeter.output.influxdb.url";
+    private static final String CSV_PATH = "jmeter.output.csv.path";
+
     private static final Configuration DEFAULTS = Configuration.factory().fromPairs(
-        "jmeter.property1", "value1"
+            INFLUXDB_ENABLED, "true",
+            CSV_ENABLED, "false",
+            INFLUXDB_URL, "http://localhost:8086/write?db=jmeter",
+            CSV_PATH, "./test-results.csv"
     );
 
 
@@ -47,7 +55,15 @@ public class JMeterConfigContributor implements ConfigContributor<JMeterStepCont
 
 
     private void configure(JMeterStepContributor contributor, Configuration configuration) {
-        // TODO
+
+        boolean influxEnabled = configuration.get(INFLUXDB_ENABLED, Boolean.class).orElse(true);
+        boolean csvEnabled = configuration.get(CSV_ENABLED, Boolean.class).orElse(false);
+        String influxUrl = configuration.get(INFLUXDB_URL, String.class).orElse("");
+        String csvPath = configuration.get(CSV_PATH, String.class).orElse("");
+
+
+        contributor.configureOutputOptions(influxEnabled, csvEnabled, influxUrl, csvPath);
+
     }
 
 
