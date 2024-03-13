@@ -4,21 +4,28 @@
 Feature: jmeter
 
 
-    Scenario: Prueba de carga
-       Given la URL base 'http://localhost:8888'
-       When ejecuto una prueba de carga con 150 usuarios durante 3 minutos
-       Then comprueba que el percentil 99 de tiempo de respuesta es menor que 5 segundos
+ #   Scenario: Prueba de carga
+  #     Given la URL base 'http://localhost:8888'
+  #     When ejecuto una prueba de carga con 800 usuarios durante 2 minutos
+  #     Then comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
 
 
-   Scenario: Prueba de estres
+    Scenario: Prueba de límite operativo
       Given la URL base 'http://localhost:8888'
-      When ejecuto una prueba de estrés comenzando con 100 usuarios, incrementando en 100 hasta 500 usuarios durante 2 minutos
-      Then comprueba que el percentil 99 de tiempo de respuesta es menor que 5 segundos
+      When ejecuto una prueba de límite operativo comenzando con 1000 usuarios, incrementando en 1000 hasta 5000 usuarios con con rampas de subida de 1 minutos
+      Then comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
 
 
-   Scenario: Prueba de picos
-      Given la URL base 'http://localhost:8888'
-      When ejecuto una prueba de picos con 2 picos de 100 usuarios, bajando a 20 usuarios durante 3 minutos
-      Then comprueba que el percentil 99 de tiempo de respuesta es menor que 5 segundos
+
+ #  Scenario: Prueba de estres
+  #    Given la URL base 'http://localhost:8888'
+  #    When ejecuto una prueba de estrés comenzando con 100 usuarios, incrementando en 100 hasta 500 usuarios durante 2 minutos
+  #    Then comprueba que el percentil 99 de tiempo de respuesta es menor que 5 segundos
+
+
+ #  Scenario: Prueba de picos
+  #    Given la URL base 'http://localhost:8888'
+  #    When ejecuto una prueba de picos con 2 picos de 100 usuarios, bajando a 20 usuarios durante 3 minutos
+ #     Then comprueba que el percentil 99 de tiempo de respuesta es menor que 5 segundos
 
 

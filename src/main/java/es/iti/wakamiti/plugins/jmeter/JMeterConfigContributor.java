@@ -29,7 +29,7 @@ public class JMeterConfigContributor implements ConfigContributor<JMeterStepCont
 
     private static final Configuration DEFAULTS = Configuration.factory().fromPairs(
             INFLUXDB_ENABLED, "true",
-            CSV_ENABLED, "false",
+            CSV_ENABLED, "true",
             INFLUXDB_URL, "http://localhost:8086/write?db=jmeter",
             CSV_PATH, "./test-results.csv"
     );

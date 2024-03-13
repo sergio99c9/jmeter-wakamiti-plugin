@@ -68,6 +68,29 @@ public class JMeterStepContributor implements StepContributor {
                         httpSampler(baseUrl)
                 )).run();
     }
+    @Step(value = "jmeter.test.limitetest", args = {"usuarios:int", "incrementoUsuarios:int", "maxUsuarios:int", "duracion:int"})
+    public void EjecutarPruebaLimiteOperativo(Integer usuarios, Integer incrementoUsuarios, Integer maxUsuarios, Integer duracion) throws IOException {
+
+        int usuariosActuales = usuarios;
+        DslDefaultThreadGroup threadGroup = threadGroup();
+
+        while (usuariosActuales <= maxUsuarios) {
+            threadGroup= threadGroup.rampTo(usuariosActuales, Duration.ofMinutes(duracion));
+            usuariosActuales += incrementoUsuarios;
+        }
+
+        if (influxDBEnabled) {
+            threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
+        }
+        if (csvEnabled) {
+            threadGroup.children(jtlWriter(csvPath));
+        }
+
+        lastTestStats = testPlan(
+                threadGroup.children(
+                        httpSampler(baseUrl)
+                )).run();
+    }
     @Step(value = "jmeter.test.stresstest", args = {"usuarios:int", "incrementoUsuarios:int", "maxUsuarios:int", "duracion:int"})
     public void EjecutarPruebaEstres(Integer usuarios, Integer incrementoUsuarios, Integer maxUsuarios, Integer duracion) throws IOException {
 
