@@ -3,6 +3,10 @@
 #
 Feature: jmeter
 
+ #   Scenario: Prueba de humo
+  #     Given la URL base 'http://localhost:8888'
+  #     When ejecuto una prueba de humo
+  #     Then comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
 
  #   Scenario: Prueba de carga
   #     Given la URL base 'http://localhost:8888'

@@ -49,6 +49,25 @@ public class JMeterStepContributor implements StepContributor {
         this.baseUrl = baseUrl;
     }
 
+    @Step(value = "jmeter.test.foamtest")
+    public void EjecutarPruebaHumo() throws IOException {
+
+
+        DslDefaultThreadGroup threadGroup = threadGroup(1, 1);
+
+        if (influxDBEnabled) {
+            threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
+        }
+
+        if (csvEnabled) {
+            threadGroup.children(jtlWriter(csvPath));
+        }
+
+        lastTestStats = testPlan(
+                threadGroup.children(
+                        httpSampler(baseUrl)
+                )).run();
+    }
     @Step(value = "jmeter.test.loadtest", args = {"usuarios:int", "duracion:int"})
     public void EjecutarPruebaCarga(Integer usuarios, Integer duracion) throws IOException {
 
