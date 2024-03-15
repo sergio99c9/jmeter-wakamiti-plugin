@@ -40,7 +40,14 @@ public class JMeterTest {
 
     @BeforeClass
     public static void setupServer() {
+
         client.when(HttpRequest.request().withPath("/")).respond(HttpResponse.response().withStatusCode(200));
+        client.when(HttpRequest.request().withMethod("GET").withPath("/getExample"))
+                .respond(HttpResponse.response().withStatusCode(200).withBody("GET response"));
+        client.when(HttpRequest.request().withMethod("POST").withPath("/postExample"))
+                .respond(HttpResponse.response().withStatusCode(201).withBody("POST response"));
+        client.when(HttpRequest.request().withMethod("PUT").withPath("/putExample"))
+                .respond(HttpResponse.response().withStatusCode(200).withBody("PUT response"));
     }
 
 

@@ -8,16 +8,17 @@ Feature: jmeter
   #     When ejecuto una prueba de humo
   #     Then comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
 
- #   Scenario: Prueba de carga
+    Scenario: Prueba de carga
+       Given la URL base 'http://localhost:8888'
+       And hago un GET al endpoint '/getExample'
+       When ejecuto una prueba de carga con 800 usuarios durante 2 minutos
+       Then comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
+
+
+  #   Scenario: Prueba de límite operativo
   #     Given la URL base 'http://localhost:8888'
-  #     When ejecuto una prueba de carga con 800 usuarios durante 2 minutos
+  #     When ejecuto una prueba de límite operativo comenzando con 1000 usuarios, incrementando en 1000 hasta 5000 usuarios con con rampas de subida de 1 minutos
   #     Then comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
-
-
-    Scenario: Prueba de límite operativo
-      Given la URL base 'http://localhost:8888'
-      When ejecuto una prueba de límite operativo comenzando con 1000 usuarios, incrementando en 1000 hasta 5000 usuarios con con rampas de subida de 1 minutos
-      Then comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
 
 
 
