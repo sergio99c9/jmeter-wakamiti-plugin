@@ -10,8 +10,21 @@ Feature: jmeter
 
     Scenario: Prueba de carga
        Given la URL base 'http://localhost:8888'
-       And hago un GET al endpoint '/getExample'
-       When ejecuto una prueba de carga con 800 usuarios durante 2 minutos
+       And hago un GET al endpoint '/inicio'
+       And hago un POST al endpoint '/login' con el siguiente mensaje:
+       """
+        {
+         "usuario": "testuser",
+         "contraseña": "testpass"
+        }
+       """
+      And hago un PUT al endpoint '/actualizar' con el siguiente mensaje:
+      """
+       {
+        "campo": "valor"
+       }
+      """
+       When ejecuto una prueba de carga con 400 usuarios durante 2 minutos
        Then comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
 
 

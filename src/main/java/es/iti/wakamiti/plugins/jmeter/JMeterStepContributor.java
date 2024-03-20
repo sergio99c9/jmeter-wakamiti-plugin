@@ -53,6 +53,7 @@ public class JMeterStepContributor implements StepContributor {
         this.threadGroup = null;
         this.escenarioBasico = true;
     }
+
     @Step(value = "jmeter.define.baseURL")
     public void setBaseURL(String baseUrl) {
         this.baseUrl = baseUrl;
@@ -118,14 +119,14 @@ public class JMeterStepContributor implements StepContributor {
     public void EjecutarPruebaCarga(Integer usuarios, Integer duracion) throws IOException {
 
 
-         threadGroup = threadGroup(usuarios, Duration.ofMinutes(duracion));
+         threadGroup = threadGroup.rampToAndHold(usuarios, Duration.ofSeconds(0), Duration.ofMinutes(duracion));
 
         if (influxDBEnabled) {
-            threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
+            threadGroup = threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
         }
 
         if (csvEnabled) {
-            threadGroup.children(jtlWriter(csvPath));
+            threadGroup = threadGroup.children(jtlWriter(csvPath));
         }
 
         if(escenarioBasico)
@@ -206,10 +207,7 @@ public class JMeterStepContributor implements StepContributor {
     @Step(value = "jmeter.test.peaktest", args = {"numeroPicos:int", "usuariosPico:int", "usuariosFueraPico:int", "duracion:int"})
     public void EjecutarPruebaPico(Integer numeroPicos, Integer usuariosPico, Integer usuariosFueraPico, Integer duracion) throws IOException {
 
-        threadGroup = threadGroup(
-                usuariosFueraPico,
-                Duration.ofMinutes(duracion)
-        );
+        threadGroup = threadGroup.rampToAndHold(usuariosFueraPico, Duration.ofSeconds(20), Duration.ofMinutes(duracion));
 
         for (int i = 0; i < numeroPicos; i++) {
             // Sube al pico

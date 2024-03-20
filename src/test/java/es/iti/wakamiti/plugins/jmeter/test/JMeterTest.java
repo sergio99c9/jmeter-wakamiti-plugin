@@ -42,12 +42,18 @@ public class JMeterTest {
     public static void setupServer() {
 
         client.when(HttpRequest.request().withPath("/")).respond(HttpResponse.response().withStatusCode(200));
-        client.when(HttpRequest.request().withMethod("GET").withPath("/getExample"))
-                .respond(HttpResponse.response().withStatusCode(200).withBody("GET response"));
-        client.when(HttpRequest.request().withMethod("POST").withPath("/postExample"))
-                .respond(HttpResponse.response().withStatusCode(201).withBody("POST response"));
-        client.when(HttpRequest.request().withMethod("PUT").withPath("/putExample"))
-                .respond(HttpResponse.response().withStatusCode(200).withBody("PUT response"));
+        // Configuración para el endpoint GET '/inicio'
+        client.when(HttpRequest.request().withMethod("GET").withPath("/inicio"))
+                .respond(HttpResponse.response().withStatusCode(200).withBody("Página de Inicio"));
+
+        // Configuración para el endpoint POST '/login'
+        client.when(HttpRequest.request().withMethod("POST").withPath("/login"))
+                .respond(HttpResponse.response().withStatusCode(200).withBody("{\"mensaje\": \"Usuario autenticado\"}"));
+
+        // Configuración para el endpoint PUT '/actualizar'
+        client.when(HttpRequest.request().withMethod("PUT").withPath("/actualizar"))
+                .respond(HttpResponse.response().withStatusCode(200).withBody("{\"mensaje\": \"Información actualizada\"}"));
+
     }
 
 
