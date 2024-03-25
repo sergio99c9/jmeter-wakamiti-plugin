@@ -58,6 +58,34 @@ public class JMeterStepContributor implements StepContributor {
         this.escenarioBasico = true;
     }
 
+    private void configurarListeners(){
+
+        if (influxDBEnabled) {
+            threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
+        }
+
+        if (csvEnabled) {
+            threadGroup.children(jtlWriter(csvPath));
+        }
+
+        if (htmlEnabled) {
+            threadGroup.children(htmlReporter(htmlPath));
+        }
+    }
+
+    private void ejecutarPruebas() throws IOException {
+
+        if(escenarioBasico)
+        {
+            lastTestStats = testPlan(
+                    threadGroup.children(
+                            httpSampler(baseUrl)
+                    )).run();
+        }
+        else {
+            lastTestStats = testPlan(threadGroup).run();
+        }
+    }
     @Step(value = "jmeter.define.baseURL")
     public void setBaseURL(String baseUrl) {
         this.baseUrl = baseUrl;
@@ -65,7 +93,7 @@ public class JMeterStepContributor implements StepContributor {
 
     @Step(value = "jmeter.define.csvinput", args = { "fichero:text" })
     public void setCSVInput(String fichero) {
-        threadGroup.children(csvDataSet(fichero));
+        threadGroup.children(csvDataSet(fichero).variableNames("username"));
         threadGroup.children(
                 httpSampler(baseUrl+"/login")
                         .post("{\"username\": \"${username}\", \"password\": \"${password}\", \"email\": \"${email}\"}",
@@ -109,28 +137,9 @@ public class JMeterStepContributor implements StepContributor {
 
         threadGroup = threadGroup(1, 1);
 
-        if (influxDBEnabled) {
-            threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
-        }
+        configurarListeners();
 
-        if (csvEnabled) {
-            threadGroup.children(jtlWriter(csvPath));
-        }
-
-        if (htmlEnabled) {
-            threadGroup.children(htmlReporter(htmlPath));
-        }
-
-        if(escenarioBasico)
-        {
-            lastTestStats = testPlan(
-                    threadGroup.children(
-                            httpSampler(baseUrl)
-                    )).run();
-        }
-        else {
-            lastTestStats = testPlan(threadGroup).run();
-        }
+        ejecutarPruebas();
 
     }
 
@@ -140,28 +149,9 @@ public class JMeterStepContributor implements StepContributor {
 
          threadGroup = threadGroup.rampToAndHold(usuarios, Duration.ofSeconds(0), Duration.ofMinutes(duracion));
 
-        if (influxDBEnabled) {
-            threadGroup = threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
-        }
+         configurarListeners();
 
-        if (csvEnabled) {
-            threadGroup = threadGroup.children(jtlWriter(csvPath).withAllFields());
-        }
-
-        if (htmlEnabled) {
-            threadGroup.children(htmlReporter(htmlPath));
-        }
-
-        if(escenarioBasico)
-        {
-            lastTestStats = testPlan(
-                    threadGroup.children(
-                            httpSampler(baseUrl)
-                    )).run();
-        }
-        else {
-            lastTestStats = testPlan(threadGroup).run();
-        }
+         ejecutarPruebas();
 
     }
     @Step(value = "jmeter.test.limitetest", args = {"usuarios:int", "incrementoUsuarios:int", "maxUsuarios:int", "duracion:int"})
@@ -174,23 +164,9 @@ public class JMeterStepContributor implements StepContributor {
             usuariosActuales += incrementoUsuarios;
         }
 
-        if (influxDBEnabled) {
-            threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
-        }
-        if (csvEnabled) {
-            threadGroup.children(jtlWriter(csvPath));
-        }
+        configurarListeners();
 
-        if(escenarioBasico)
-        {
-            lastTestStats = testPlan(
-                    threadGroup.children(
-                            httpSampler(baseUrl)
-                    )).run();
-        }
-        else {
-            lastTestStats = testPlan(threadGroup).run();
-        }
+        ejecutarPruebas();
 
     }
     @Step(value = "jmeter.test.stresstest", args = {"usuarios:int", "incrementoUsuarios:int", "maxUsuarios:int", "duracion:int"})
@@ -208,23 +184,9 @@ public class JMeterStepContributor implements StepContributor {
         //Disminuir a 0 'usuarios'
         threadGroup = threadGroup.rampTo(0, Duration.ofSeconds(20));
 
-        if (influxDBEnabled) {
-            threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
-        }
+        configurarListeners();
 
-        if (csvEnabled) {
-            threadGroup.children(jtlWriter(csvPath));
-        }
-        if(escenarioBasico)
-        {
-            lastTestStats = testPlan(
-                    threadGroup.children(
-                            httpSampler(baseUrl)
-                    )).run();
-        }
-        else {
-            lastTestStats = testPlan(threadGroup).run();
-        }
+        ejecutarPruebas();
 
     }
     @Step(value = "jmeter.test.peaktest", args = {"numeroPicos:int", "usuariosPico:int", "usuariosFueraPico:int", "duracion:int"})
@@ -244,24 +206,9 @@ public class JMeterStepContributor implements StepContributor {
         //Disminuir a 0 'usuarios'
         threadGroup = threadGroup.rampTo(0, Duration.ofSeconds(20));
 
-        if (influxDBEnabled) {
-            threadGroup.children(influxDbListener("http://localhost:8086/write?db=jmeter"));
-        }
+        configurarListeners();
 
-        if (csvEnabled) {
-            threadGroup.children(jtlWriter(csvPath));
-        }
-
-        if(escenarioBasico)
-        {
-            lastTestStats = testPlan(
-                    threadGroup.children(
-                            httpSampler(baseUrl)
-                    )).run();
-        }
-        else {
-            lastTestStats = testPlan(threadGroup).run();
-        }
+        ejecutarPruebas();
 
     }
     @Step(value = "jmeter.assert.percentil", args = {"percentil:int", "duracionTest:int"})
