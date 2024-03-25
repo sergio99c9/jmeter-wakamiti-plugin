@@ -58,6 +58,11 @@ public class JMeterStepContributor implements StepContributor {
     public void setBaseURL(String baseUrl) {
         this.baseUrl = baseUrl;
     }
+
+    @Step(value = "jmeter.define.csvinput", args = { "fichero:text" })
+    public void setCSVInput(String fichero) {
+        threadGroup.children(csvDataSet(fichero));
+    }
     @Step(value = "jmeter.define.get", args = { "service:text" })
     public void llamadaGet(String service) {
         threadGroup.children(httpSampler(baseUrl+service));
