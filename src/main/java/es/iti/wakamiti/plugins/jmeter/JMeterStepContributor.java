@@ -40,14 +40,18 @@ public class JMeterStepContributor implements StepContributor {
     public TestPlanStats lastTestStats;
     private boolean influxDBEnabled;
     private boolean csvEnabled;
+    private boolean htmlEnabled;
     private String influxDBUrl;
     private String csvPath;
+    private String htmlPath;
 
-    public void configureOutputOptions(boolean influxDBEnabled, boolean csvEnabled, String influxDBUrl, String csvPath) {
+    public void configureOutputOptions(boolean influxDBEnabled, boolean csvEnabled, boolean htmlEnabled, String influxDBUrl, String csvPath, String htmlPath) {
         this.influxDBEnabled = influxDBEnabled;
         this.csvEnabled = csvEnabled;
+        this.htmlEnabled = htmlEnabled;
         this.influxDBUrl = influxDBUrl;
         this.csvPath = csvPath;
+        this.htmlPath = htmlPath;
     }
     private void resetThreadGroup() {
         this.threadGroup = null;
@@ -62,6 +66,12 @@ public class JMeterStepContributor implements StepContributor {
     @Step(value = "jmeter.define.csvinput", args = { "fichero:text" })
     public void setCSVInput(String fichero) {
         threadGroup.children(csvDataSet(fichero));
+        threadGroup.children(
+                httpSampler(baseUrl+"/login")
+                        .post("{\"username\": \"${username}\", \"password\": \"${password}\", \"email\": \"${email}\"}",
+                                ContentType.APPLICATION_JSON)
+        );
+        escenarioBasico = false;
     }
     @Step(value = "jmeter.define.get", args = { "service:text" })
     public void llamadaGet(String service) {
@@ -107,6 +117,10 @@ public class JMeterStepContributor implements StepContributor {
             threadGroup.children(jtlWriter(csvPath));
         }
 
+        if (htmlEnabled) {
+            threadGroup.children(htmlReporter(htmlPath));
+        }
+
         if(escenarioBasico)
         {
             lastTestStats = testPlan(
@@ -131,7 +145,11 @@ public class JMeterStepContributor implements StepContributor {
         }
 
         if (csvEnabled) {
-            threadGroup = threadGroup.children(jtlWriter(csvPath));
+            threadGroup = threadGroup.children(jtlWriter(csvPath).withAllFields());
+        }
+
+        if (htmlEnabled) {
+            threadGroup.children(htmlReporter(htmlPath));
         }
 
         if(escenarioBasico)
