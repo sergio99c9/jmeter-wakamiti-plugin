@@ -133,7 +133,7 @@ public class JMeterStepContributor implements StepContributor {
                 .collect(Collectors.toList());
         String requestBody = buildRequestBody(filtroVariables);
 
-        threadGroup.children(csvDataSet(fichero).variableNames(String.join(",", filtroVariables)));
+        threadGroup.children(csvDataSet(fichero));
         threadGroup.children(
                 httpSampler(baseUrl+"/login")
                         .post(requestBody,
