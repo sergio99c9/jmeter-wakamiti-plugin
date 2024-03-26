@@ -293,9 +293,9 @@ public class JMeterStepContributor implements StepContributor {
         if (lastTestStats == null) {
             throw new IllegalStateException("No hay resultados de pruebas almacenados para verificar el tiempos de respuesta.");
         }
-
         assertThat(lastTestStats.overall().errorsCount()).isLessThan(errores);
         resetThreadGroup();
     }
+
 
 }
