@@ -34,7 +34,7 @@ public class JMeterConfigContributor implements ConfigContributor<JMeterStepCont
             BASE_URL, "http://localhost:8080",
             INFLUXDB_ENABLED, "true",
             CSV_ENABLED, "true",
-            HTML_ENABLED, "true",
+            HTML_ENABLED, "false",
             INFLUXDB_URL, "http://localhost:8086/write?db=jmeter",
             CSV_PATH, "./test-results.csv",
             HTML_PATH, "./test-results.html"

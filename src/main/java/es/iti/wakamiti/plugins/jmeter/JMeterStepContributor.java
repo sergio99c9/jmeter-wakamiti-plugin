@@ -8,11 +8,18 @@ package es.iti.wakamiti.plugins.jmeter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static us.abstracta.jmeter.javadsl.JmeterDsl.*;
+
+import es.iti.wakamiti.api.plan.DataTable;
 import es.iti.wakamiti.api.plan.Document;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.http.entity.ContentType;
 import org.apache.jmeter.protocol.http.util.HTTPConstants;
@@ -57,7 +64,17 @@ public class JMeterStepContributor implements StepContributor {
         this.threadGroup = null;
         this.escenarioBasico = true;
     }
+    private List<String> getCSVHeaders(String fichero) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(fichero))) {
+            return Arrays.asList(br.readLine().split(","));
+        }
+    }
 
+    private String buildRequestBody(List<String> columnNames) {
+        return columnNames.stream()
+                .map(name -> String.format("\"%s\": \"${%s}\"", name, name))
+                .collect(Collectors.joining(", ", "{", "}"));
+    }
     private void configurarListeners(){
 
         if (influxDBEnabled) {
@@ -65,7 +82,7 @@ public class JMeterStepContributor implements StepContributor {
         }
 
         if (csvEnabled) {
-            threadGroup.children(jtlWriter(csvPath));
+            threadGroup.children(jtlWriter(csvPath).withAllFields());
         }
 
         if (htmlEnabled) {
@@ -92,11 +109,34 @@ public class JMeterStepContributor implements StepContributor {
     }
 
     @Step(value = "jmeter.define.csvinput", args = { "fichero:text" })
-    public void setCSVInput(String fichero) {
-        threadGroup.children(csvDataSet(fichero).variableNames("username"));
+    public void setCSVInput(String fichero) throws IOException {
+
+        List<String> columnNames = getCSVHeaders(fichero);
+        String requestBody = buildRequestBody(columnNames);
+
+        threadGroup.children(csvDataSet(fichero));
         threadGroup.children(
                 httpSampler(baseUrl+"/login")
-                        .post("{\"username\": \"${username}\", \"password\": \"${password}\", \"email\": \"${email}\"}",
+                        .post(requestBody,
+                                ContentType.APPLICATION_JSON)
+        );
+        escenarioBasico = false;
+    }
+    @Step(value = "jmeter.define.csvinputvariables", args = { "fichero:text" })
+    public void setCSVInputVariables(String fichero, DataTable variables) throws IOException {
+
+        List<String> csvHeaders = getCSVHeaders(fichero);
+
+        List<String> filtroVariables = Arrays.stream(variables.getValues())
+                .map(row -> row[0])
+                .filter(csvHeaders::contains)
+                .collect(Collectors.toList());
+        String requestBody = buildRequestBody(filtroVariables);
+
+        threadGroup.children(csvDataSet(fichero).variableNames(String.join(",", filtroVariables)));
+        threadGroup.children(
+                httpSampler(baseUrl+"/login")
+                        .post(requestBody,
                                 ContentType.APPLICATION_JSON)
         );
         escenarioBasico = false;

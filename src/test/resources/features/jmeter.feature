@@ -10,7 +10,11 @@ Feature: jmeter
 
     Scenario: Prueba de carga
        Given la URL base 'http://localhost:8888'
-       And un fichero con los siguientes datos './prueba.csv'
+       And un fichero con los siguientes datos './pruebadefinitiva.csv' trabajando con las variables:
+          |variables|
+          |category |
+          |productName|
+          |pimiento   |
        When ejecuto una prueba de carga con 400 usuarios durante 2 minutos
        Then comprueba que el percentil 99 de tiempo de respuesta es menor que 2 segundos
 
