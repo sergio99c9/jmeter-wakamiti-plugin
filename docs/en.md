@@ -156,6 +156,45 @@ Sets the base path. This step is equivalent to configuring the [`rest.baseURL`](
 
 <br /><br />
 
+### Define CSV Input
+```
+a file with the following data {file:text}
+```
+Sets a CSV file as input for JMeter tests.
+
+#### Parameters:
+| Name       | Wakamiti type | Description                                  |
+|------------|---------------|----------------------------------------------|
+| `file`     | `text`        | Path to the CSV file with input data         |
+
+#### Example:
+```gherkin
+     Given a file with the following data './users.csv'
+```
+
+<br /><br />
+
+### Define CSV Input with Variables
+```
+a file with the following data {file:text} working with the variables:
+```
+Sets a CSV file as input and specifies the variables to be used during JMeter tests. It allows filtering and using only certain columns from the CSV file as variables within the test.
+
+#### Parameters:
+| Name       | Wakamiti type | Description                                       |
+|------------|---------------|---------------------------------------------------|
+| `file`     | `text`        | Path to the CSV file with input data              |
+|            | `DataTable`   | A table specifying the variables to be used       |
+
+#### Example:
+```gherkin
+Given a file with the following data 'users.csv' working with the variables:
+   | username |
+   | password |
+```
+
+<br /><br />
+
 ### Perform GET Request
 ```
  perform a GET to the endpoint {service:text}
