@@ -338,26 +338,6 @@ Verifica que el percentil especificado del tiempo de respuesta sea menor que la 
 
 <br /><br />
 
-### Comprobar percentil de tiempo de respuesta
-```
-comprueba que el percentil {percentil:int} de tiempo de respuesta es menor que {duracionTest:int} segundos
-```
-Verifica que el percentil especificado del tiempo de respuesta sea menor que la duración dada.
-
-#### Parámetros:
-| Nombre        | Wakamiti type | Descripción                                   |
-|---------------|---------------|-----------------------------------------------|
-| `percentil`   |   `int`       | Percentil del tiempo de respuesta a comprobar |
-| `duracionTest`|   `int`       | Duración máxima esperada                      |
-
-#### Ejemplos:
-```gherkin
- Entonces comprueba que el percentil 95 de tiempo de respuesta es menor que 2 segundos
-```
-
-<br /><br />
-
-
 ### Comprobar tiempo de respuesta medio
 ```
 comprueba que el tiempo de respuesta medio es menor que {duracionTest:int} segundos
@@ -376,7 +356,7 @@ Verifica que el tiempo de respuesta medio sea menor que la duración dada.
 
 <br /><br />
 
-### Comprobar tiempo de respuesta medio
+### Comprobar errores en las peticiones
 ```
 comprueba que el número de peticiones que han devuelto error es menor que {errores:int}
 ```
