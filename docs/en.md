@@ -1,7 +1,7 @@
 This plugin provides a set of steps for conducting performance testing using JMeter DSL
 
 ---
-## Tabla of Contents
+## Table of Contents
 
 ---
 ## Configuration
