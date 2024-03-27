@@ -247,7 +247,7 @@ Ejecuta una prueba de carga simulando la actividad de un número específico de 
 | Nombre    | Wakamiti type | Descripción              |
 |-----------|---------------|--------------------------|
 | `usuarios`|   `int`       | Número de usuarios       |
-| 'duracion'|   `int`       | Tiempo de la prueba      |
+| `duracion`|   `int`       | Tiempo de la prueba      |
 
 #### Ejemplos:
 ```gherkin
@@ -268,7 +268,7 @@ Ejecuta una prueba de estrés incrementando gradualmente la carga de usuarios y 
 | `usuarios`          |   `int`       | Número inicial de usuarios                    |
 | `incrementoUsuarios`|   `int`       | Incremento de usuarios por intervalo          |
 | `maxUsuarios`       |   `int`       | Máximo número de usuarios                     |
-| 'duracion'          |   `int`       | Tiempo que se mantiene la carga por intervalo |
+| `duracion`          |   `int`       | Tiempo que se mantiene la carga por intervalo |
 
 #### Ejemplos:
 ```gherkin
@@ -289,7 +289,7 @@ Ejecuta una prueba de picos para simular cargas irregulares en el sistema, alter
 | `numeroPicos`       |   `int`       | Número de picos de carga                                 |
 | `usuariosPico`      |   `int`       | Número de usuarios en cada pico                          |
 | `usuariosFueraPico` |   `int`       | Número de usuarios fuera de los picos                    |
-| 'duracion'          |   `int`       | Tiempo que se mantiene la carga antes de simular un pico |
+| `duracion`          |   `int`       | Tiempo que se mantiene la carga antes de simular un pico |
 
 #### Ejemplos:
 ```gherkin
@@ -310,7 +310,7 @@ Ejecuta una prueba para encontrar el límite operativo del sistema, aumentando p
 | `usuarios   `       |   `int`       | Número inicial de usuarios                               |
 | `incrementoUsuarios`|   `int`       | Incremento de usuarios                                   |
 | `usuariosFueraPico` |   `int`       | Número máximo de usuarios                                |
-| 'duracion'          |   `int`       | Tiempo de rampa de subida antes de aumentar los usuarios |
+| `duracion`          |   `int`       | Tiempo de rampa de subida antes de aumentar los usuarios |
 
 #### Ejemplos:
 ```gherkin
