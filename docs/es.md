@@ -188,7 +188,7 @@ Establece un fichero CSV como entrada y especifica las variables a utilizar dura
 
 #### Ejemplos:
 ```gherkin
-    Dado un fichero con los siguientes datos 'usuarios.csv' trabajando con las variables:
+Dado un fichero con los siguientes datos 'usuarios.csv' trabajando con las variables:
    | username |
    | password |
 ```
