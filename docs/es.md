@@ -156,6 +156,45 @@ Establece la ruta base. Este paso es equivalente a configurar la propiedad [`res
 
 <br /><br />
 
+### Definir entrada CSV
+```
+un fichero con los siguientes datos {fichero:text}
+```
+Establece un fichero CSV como entrada para las pruebas de JMeter.
+
+#### Parámetros:
+| Nombre     | Wakamiti type | Descripción                                  |
+|------------|---------------|----------------------------------------------|
+| `fichero`  | `text`        | Ruta al fichero CSV con los datos de entrada |
+
+#### Ejemplos:
+```gherkin
+   Dado un fichero con los siguientes datos './usuarios.csv'
+```
+
+<br /><br />
+
+### Definir entrada CSV con variables
+```
+un fichero con los siguientes datos {fichero:text} trabajando con las variables:
+```
+Establece un fichero CSV como entrada y especifica las variables a utilizar durante las pruebas de JMeter. Permite filtrar y usar solo ciertas columnas del fichero CSV como variables dentro de la prueba.
+
+#### Parámetros:
+| Nombre     | Wakamiti type | Descripción                                       |
+|------------|---------------|---------------------------------------------------|
+| `fichero`  | `text`        | Ruta al fichero CSV con los datos de entrada      |
+|            | `DataTable`   | Una tabla que especifica las variables a utilizar |
+
+#### Ejemplos:
+```gherkin
+    Dado un fichero con los siguientes datos 'usuarios.csv' trabajando con las variables:
+   | username |
+   | password |
+```
+
+<br /><br />
+
 ### Realizar petición GET
 ```
 hago un GET al endpoint {service:text}
