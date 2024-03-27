@@ -277,29 +277,120 @@ Ejecuta una prueba de estrés incrementando gradualmente la carga de usuarios y 
 
 <br /><br />
 
-### Ejecutar prueba de estrés
+### Ejecutar prueba de picos
 ```
-ejecuto una prueba de estrés comenzando con {usuarios:int} usuarios, incrementando en {incrementoUsuarios:int} hasta {maxUsuarios:int} usuarios durante {duracion:int} minutos
+ejecuto una prueba de picos con {numeroPicos:int} picos de {usuariosPico:int} usuarios, bajando a {usuariosFueraPico:int} usuarios durante {duracion:int} minutos
 ```
-Ejecuta una prueba de estrés incrementando gradualmente la carga de usuarios y manteniendo dicha carga para identificar el punto de ruptura del sistema.
+Ejecuta una prueba de picos para simular cargas irregulares en el sistema, alternando entre un número alto y bajo de usuarios.
 
 #### Parámetros:
-| Nombre              | Wakamiti type | Descripción                                   |
-|---------------------|---------------|-----------------------------------------------|
-| `usuarios`          |   `int`       | Número inicial de usuarios                    |
-| `incrementoUsuarios`|   `int`       | Incremento de usuarios por intervalo          |
-| `maxUsuarios`       |   `int`       | Máximo número de usuarios                     |
-| 'duracion'          |   `int`       | Tiempo que se mantiene la carga por intervalo |
+| Nombre              | Wakamiti type | Descripción                                              |
+|---------------------|---------------|----------------------------------------------------------|
+| `numeroPicos`       |   `int`       | Número de picos de carga                                 |
+| `usuariosPico`      |   `int`       | Número de usuarios en cada pico                          |
+| `usuariosFueraPico` |   `int`       | Número de usuarios fuera de los picos                    |
+| 'duracion'          |   `int`       | Tiempo que se mantiene la carga antes de simular un pico |
 
 #### Ejemplos:
 ```gherkin
- Cuando ejecuto una prueba de estrés comenzando con 100 usuarios, incrementando en 100 hasta 2000 usuarios durante 5 minutos
+ Cuando ejecuto una prueba de picos con 3 picos de 1000 usuarios, bajando a 200 usuarios durante 5 minutos
+```
+
+<br /><br />
+
+### Ejecutar prueba de límite operativo
+```
+ejecuto una prueba de límite operativo comenzando con {usuarios:int} usuarios, incrementando en {incrementoUsuarios:int} hasta {maxUsuarios:int} usuarios con rampas de subida de {duracion:int} minutos
+```
+Ejecuta una prueba para encontrar el límite operativo del sistema, aumentando progresivamente el número de usuarios.
+
+#### Parámetros:
+| Nombre              | Wakamiti type | Descripción                                              |
+|---------------------|---------------|----------------------------------------------------------|
+| `usuarios   `       |   `int`       | Número inicial de usuarios                               |
+| `incrementoUsuarios`|   `int`       | Incremento de usuarios                                   |
+| `usuariosFueraPico` |   `int`       | Número máximo de usuarios                                |
+| 'duracion'          |   `int`       | Tiempo de rampa de subida antes de aumentar los usuarios |
+
+#### Ejemplos:
+```gherkin
+ Cuando ejecuto una prueba de límite operativo comenzando con 100 usuarios, incrementando en 100 hasta 5000 usuarios con rampas de subida de 2 minutos
+```
+
+<br /><br />
+
+### Comprobar percentil de tiempo de respuesta
+```
+comprueba que el percentil {percentil:int} de tiempo de respuesta es menor que {duracionTest:int} segundos
+```
+Verifica que el percentil especificado del tiempo de respuesta sea menor que la duración dada.
+
+#### Parámetros:
+| Nombre        | Wakamiti type | Descripción                                   |
+|---------------|---------------|-----------------------------------------------|
+| `percentil`   |   `int`       | Percentil del tiempo de respuesta a comprobar |
+| `duracionTest`|   `int`       | Duración máxima esperada                      |
+
+#### Ejemplos:
+```gherkin
+ Entonces comprueba que el percentil 95 de tiempo de respuesta es menor que 2 segundos
+```
+
+<br /><br />
+
+### Comprobar percentil de tiempo de respuesta
+```
+comprueba que el percentil {percentil:int} de tiempo de respuesta es menor que {duracionTest:int} segundos
+```
+Verifica que el percentil especificado del tiempo de respuesta sea menor que la duración dada.
+
+#### Parámetros:
+| Nombre        | Wakamiti type | Descripción                                   |
+|---------------|---------------|-----------------------------------------------|
+| `percentil`   |   `int`       | Percentil del tiempo de respuesta a comprobar |
+| `duracionTest`|   `int`       | Duración máxima esperada                      |
+
+#### Ejemplos:
+```gherkin
+ Entonces comprueba que el percentil 95 de tiempo de respuesta es menor que 2 segundos
 ```
 
 <br /><br />
 
 
+### Comprobar tiempo de respuesta medio
+```
+comprueba que el tiempo de respuesta medio es menor que {duracionTest:int} segundos
+```
+Verifica que el tiempo de respuesta medio sea menor que la duración dada.
 
+#### Parámetros:
+| Nombre        | Wakamiti type | Descripción                                   |
+|---------------|---------------|-----------------------------------------------|
+| `duracionTest`|   `int`       | Duración máxima esperada                      |
+
+#### Ejemplos:
+```gherkin
+ Entonces comprueba que el tiempo de respuesta medio es menor que 2 segundos
+```
+
+<br /><br />
+
+### Comprobar tiempo de respuesta medio
+```
+comprueba que el número de peticiones que han devuelto error es menor que {errores:int}
+```
+Verifica que el número de peticiones que han devuelto un error es menor que el número especificado.
+
+#### Parámetros:
+| Nombre   | Wakamiti type | Descripción               |
+|----------|---------------|---------------------------|
+| `errores`|   `int`       | Errores máximos esperados |
+
+#### Ejemplos:
+```gherkin
+ Entonces comprueba que el número de peticiones que han devuelto error es menor que 10
+```
 
 
 
