@@ -2,6 +2,30 @@ This plugin provides a set of steps for conducting performance testing using JMe
 
 ---
 ## Table of Contents
+   1. [Configuration](#configuration)
+      - [jmeter.baseURL](#jmeterbaseurl)
+      - [Plugin Outputs](#plugin-outputs)
+        - [jmeter.output.influxdb.enabled](#jmeteroutputinfluxdbenabled)
+        - [jmeter.output.influxdb.url](#jmeteroutputinfluxdburl)
+        - [jmeter.output.csv.enabled](#jmeteroutputcsvenabled)
+        - [jmeter.output.csv.path](#jmeteroutputcsvpath)
+        - [jmeter.output.html.enabled](#jmeteroutputhtmlenabled)
+        - [jmeter.output.html.path](#jmeteroutputhtmlpath)
+   2. [Steps](#steps)
+      - [Set Base URL](#set-base-url)
+      - [Define CSV Input](#define-csv-input)
+      - [Define CSV Input with Variables](#define-csv-input-with-variables)
+      - [Perform GET Request](#perform-get-request)
+      - [Perform PUT Request](#perform-put-request)
+      - [Perform POST Request](#perform-post-request)
+      - [Execute Smoke Test](#execute-smoke-test)
+      - [Execute Load Test](#execute-load-test)
+      - [Execute Stress Test](#execute-stress-test)
+      - [Execute Spike Test](#execute-spike-test)
+      - [Execute Operational Limit Test](#execute-operational-limit-test)
+      - [Check Response Time Percentile](#check-response-time-percentile)
+      - [Check Average Response Time](#check-average-response-time)
+      - [Check for Request Errors](#check-for-request-errors)
 
 ---
 ## Configuration
