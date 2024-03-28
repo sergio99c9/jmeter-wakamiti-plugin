@@ -29,6 +29,8 @@ public class JMeterConfigContributor implements ConfigContributor<JMeterStepCont
     private static final String HTML_ENABLED = "jmeter.output.html.enabled";
     private static final String HTML_PATH = "jmeter.output.html.path";
     public static final String BASE_URL = "jmeter.baseURL";
+    public static final String USERNAME = "jmeter.auth.username";
+    public static final String PASSWORD = "jmeter.auth.password";
 
     private static final Configuration DEFAULTS = Configuration.factory().fromPairs(
             BASE_URL, "http://localhost:8080",
@@ -70,10 +72,13 @@ public class JMeterConfigContributor implements ConfigContributor<JMeterStepCont
         String influxUrl = configuration.get(INFLUXDB_URL, String.class).orElse("");
         String csvPath = configuration.get(CSV_PATH, String.class).orElse("");
         String htmlPath = configuration.get(HTML_PATH, String.class).orElse("");
+        String username = configuration.get(USERNAME, String.class).orElse("");
+        String password = configuration.get(PASSWORD, String.class).orElse("");
 
 
 
         contributor.configureOutputOptions(influxEnabled, csvEnabled, htmlEnabled, influxUrl, csvPath, htmlPath);
+        contributor.setAuthCredentials(username,password);
 
     }
 

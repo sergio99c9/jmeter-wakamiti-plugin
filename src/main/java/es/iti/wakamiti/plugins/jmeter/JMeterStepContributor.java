@@ -51,6 +51,8 @@ public class JMeterStepContributor implements StepContributor {
     private String influxDBUrl;
     private String csvPath;
     private String htmlPath;
+    private String username;
+    private String password;
 
     public void configureOutputOptions(boolean influxDBEnabled, boolean csvEnabled, boolean htmlEnabled, String influxDBUrl, String csvPath, String htmlPath) {
         this.influxDBEnabled = influxDBEnabled;
@@ -59,6 +61,10 @@ public class JMeterStepContributor implements StepContributor {
         this.influxDBUrl = influxDBUrl;
         this.csvPath = csvPath;
         this.htmlPath = htmlPath;
+    }
+    public void setAuthCredentials(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
     private void resetThreadGroup() {
         this.threadGroup = null;
@@ -82,7 +88,7 @@ public class JMeterStepContributor implements StepContributor {
         }
 
         if (csvEnabled) {
-            threadGroup.children(jtlWriter(csvPath).withAllFields());
+            threadGroup.children(jtlWriter(csvPath));
         }
 
         if (htmlEnabled) {
@@ -114,7 +120,7 @@ public class JMeterStepContributor implements StepContributor {
         List<String> columnNames = getCSVHeaders(fichero);
         String requestBody = buildRequestBody(columnNames);
 
-        threadGroup.children(csvDataSet(fichero));
+        threadGroup.children(csvDataSet(testResource(fichero)));
         threadGroup.children(
                 httpSampler(baseUrl+"/login")
                         .post(requestBody,
@@ -133,13 +139,33 @@ public class JMeterStepContributor implements StepContributor {
                 .collect(Collectors.toList());
         String requestBody = buildRequestBody(filtroVariables);
 
-        threadGroup.children(csvDataSet(fichero));
+        threadGroup.children(csvDataSet(testResource(fichero)));
         threadGroup.children(
                 httpSampler(baseUrl+"/login")
                         .post(requestBody,
                                 ContentType.APPLICATION_JSON)
         );
         escenarioBasico = false;
+    }
+    @Step(value = "jmeter.define.auth.basic", args = { "username:text" , "password:text" })
+    public void setAuthBasic(String username, String password){
+
+       threadGroup.children(httpAuth().basicAuth(baseUrl,System.getenv(username), System.getenv(password)));
+    }
+    @Step(value = "jmeter.define.auth.default")
+    public void setAuthBasicDefault(){
+
+        threadGroup.children(httpAuth().basicAuth(baseUrl,System.getenv(username), System.getenv(password)));
+    }
+    @Step(value = "jmeter.define.cookies")
+    public void disableCookies(){
+
+        threadGroup.children(httpCookies().disable());
+    }
+    @Step(value = "jmeter.define.cache")
+    public void disableCache(){
+
+        threadGroup.children(httpCache().disable());
     }
     @Step(value = "jmeter.define.get", args = { "service:text" })
     public void llamadaGet(String service) {
@@ -171,9 +197,41 @@ public class JMeterStepContributor implements StepContributor {
         );
         escenarioBasico = false;
     }
+    @Step(value = "jmeter.define.connectiontimeout", args = { "duracion:int" })
+    public void setConnectionTimeout(Integer duracion) {
 
+       threadGroup.children(httpDefaults().connectionTimeout(Duration.ofSeconds(duracion)));
+    }
+    @Step(value = "jmeter.define.responsetimeout", args = { "duracion:int" })
+    public void setResponseTimeout(Integer duracion) {
+
+        threadGroup.children(httpDefaults().responseTimeout(Duration.ofMinutes(duracion)));
+    }
+    @Step(value = "jmeter.define.resources")
+    public void downloadEmbeddedResources() {
+
+        threadGroup.children(httpDefaults().downloadEmbeddedResources());
+    }
+    @Step(value = "jmeter.define.proxy", args = { "URL:text" })
+    public void setResponseTimeout(String URL) {
+
+        threadGroup.children(httpDefaults().proxy(URL));
+    }
+
+    @Step(value = "jmeter.define.responsecode", args = {"responseCode:int"})
+    public void setResponseCode(int responseCode) {
+        String script = String.format("if (prev.responseCode == '%d') { prev.successful = true }", responseCode);
+        threadGroup.children(jsr223PostProcessor(script));
+    }
+
+    @Step(value = "jmeter.test.jmxfile", args = { "archivo:text" })
+    public void ejecutarPruebaJMX(String archivo) throws IOException {
+
+        lastTestStats = DslTestPlan.fromJmx(archivo).run();
+
+    }
     @Step(value = "jmeter.test.foamtest")
-    public void EjecutarPruebaHumo() throws IOException {
+    public void ejecutarPruebaHumo() throws IOException {
 
         threadGroup = threadGroup(1, 1);
 
@@ -184,7 +242,7 @@ public class JMeterStepContributor implements StepContributor {
     }
 
     @Step(value = "jmeter.test.loadtest", args = {"usuarios:int", "duracion:int"})
-    public void EjecutarPruebaCarga(Integer usuarios, Integer duracion) throws IOException {
+    public void ejecutarPruebaCarga(Integer usuarios, Integer duracion) throws IOException {
 
 
          threadGroup = threadGroup.rampToAndHold(usuarios, Duration.ofSeconds(0), Duration.ofMinutes(duracion));
@@ -195,7 +253,7 @@ public class JMeterStepContributor implements StepContributor {
 
     }
     @Step(value = "jmeter.test.limitetest", args = {"usuarios:int", "incrementoUsuarios:int", "maxUsuarios:int", "duracion:int"})
-    public void EjecutarPruebaLimiteOperativo(Integer usuarios, Integer incrementoUsuarios, Integer maxUsuarios, Integer duracion) throws IOException {
+    public void ejecutarPruebaLimiteOperativo(Integer usuarios, Integer incrementoUsuarios, Integer maxUsuarios, Integer duracion) throws IOException {
 
         int usuariosActuales = usuarios;
 
@@ -210,7 +268,7 @@ public class JMeterStepContributor implements StepContributor {
 
     }
     @Step(value = "jmeter.test.stresstest", args = {"usuarios:int", "incrementoUsuarios:int", "maxUsuarios:int", "duracion:int"})
-    public void EjecutarPruebaEstres(Integer usuarios, Integer incrementoUsuarios, Integer maxUsuarios, Integer duracion) throws IOException {
+    public void ejecutarPruebaEstres(Integer usuarios, Integer incrementoUsuarios, Integer maxUsuarios, Integer duracion) throws IOException {
 
         // Calcula el número total de pasos necesarios para llegar de 'usuarios' a 'maxUsuarios' en incrementos de 'incrementoUsuarios'
         int totalPasos = (maxUsuarios - usuarios) / incrementoUsuarios;
@@ -230,7 +288,7 @@ public class JMeterStepContributor implements StepContributor {
 
     }
     @Step(value = "jmeter.test.peaktest", args = {"numeroPicos:int", "usuariosPico:int", "usuariosFueraPico:int", "duracion:int"})
-    public void EjecutarPruebaPico(Integer numeroPicos, Integer usuariosPico, Integer usuariosFueraPico, Integer duracion) throws IOException {
+    public void ejecutarPruebaPico(Integer numeroPicos, Integer usuariosPico, Integer usuariosFueraPico, Integer duracion) throws IOException {
 
         threadGroup = threadGroup.rampToAndHold(usuariosFueraPico, Duration.ofSeconds(20), Duration.ofMinutes(duracion));
 
@@ -251,6 +309,7 @@ public class JMeterStepContributor implements StepContributor {
         ejecutarPruebas();
 
     }
+
     @Step(value = "jmeter.assert.percentil", args = {"percentil:int", "duracionTest:int"})
     public void setPruebaPercentil(Integer percentil, Integer duracionTest) throws IOException {
 

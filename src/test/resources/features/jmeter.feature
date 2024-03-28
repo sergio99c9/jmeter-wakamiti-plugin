@@ -1,21 +1,16 @@
-#
-# Fill this file with different scenarios using the steps from the plugin
-#
-Feature: jmeter
+
+#language: es
+Característica: : jmeter
 
  #   Scenario: Prueba de humo
   #     Given la URL base 'http://localhost:8888'
   #     When ejecuto una prueba de humo
   #     Then comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
 
-    Scenario: Prueba de carga
-       Given la URL base 'http://localhost:8888'
-       And un fichero con los siguientes datos './pruebadefinitiva.csv' trabajando con las variables:
-          |productName |
-          |category|
-          |pimiento   |
-       When ejecuto una prueba de carga con 400 usuarios durante 2 minutos
-       Then comprueba que el percentil 99 de tiempo de respuesta es menor que 2 segundos
+    Escenario: Prueba de carga
+       Dada la URL base 'http://localhost:8888'
+       Cuando ejecuto una prueba de carga con 400 usuarios durante 2 minutos
+       Entonces comprueba que el percentil 99 de tiempo de respuesta es menor que 2 segundos
 
 
   #   Scenario: Prueba de límite operativo
