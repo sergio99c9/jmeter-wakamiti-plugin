@@ -12,7 +12,7 @@ import us.abstracta.jmeter.javadsl.core.threadgroups.DslDefaultThreadGroup;
 
 import us.abstracta.jmeter.javadsl.core.TestPlanStats;
 import es.iti.wakamiti.api.WakamitiConfiguration;
-import es.iti.wakamiti.core.junit.WakamitiJUnitRunner;
+import es.iti.wakamiti.junit.WakamitiJUnitRunner;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import imconfig.AnnotatedConfiguration;
 import imconfig.Configuration;

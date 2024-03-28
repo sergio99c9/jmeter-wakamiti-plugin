@@ -219,7 +219,7 @@ public class JMeterStepContributor implements StepContributor {
     }
 
     @Step(value = "jmeter.define.responsecode", args = {"responseCode:int"})
-    public void setResponseCode(int responseCode) {
+    public void setResponseCode(Integer responseCode) {
         String script = String.format("if (prev.responseCode == '%d') { prev.successful = true }", responseCode);
         threadGroup.children(jsr223PostProcessor(script));
     }
