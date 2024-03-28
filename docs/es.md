@@ -1,7 +1,32 @@
 Este plugin proporciona un conjunto de pasos para realizar pruebas de rendimiento a través de JMeter DSL 
 
 ---
-## Tabla de contenido
+## Tabla de Contenido
+  1. [Configuración](#configuración)
+     - [jmeter.baseURL](#jmeterbaseurl)
+     - [Salidas del plugin](#salidas-del-plugin)
+       - [jmeter.output.influxdb.enabled](#jmeteroutputinfluxdbenabled)
+       - [jmeter.output.influxdb.url](#jmeteroutputinfluxdburl)
+       - [jmeter.output.csv.enabled](#jmeteroutputcsvenabled)
+       - [jmeter.output.csv.path](#jmeteroutputcsvpath)
+       - [jmeter.output.html.enabled](#jmeteroutputhtmlenabled)
+       - [jmeter.output.html.path](#jmeteroutputhtmlpath)
+  2. [Pasos](#pasos)
+     - [Definir URL base](#definir-url-base)
+     - [Definir entrada CSV](#definir-entrada-csv)
+     - [Definir entrada CSV con variables](#definir-entrada-csv-con-variables)
+     - [Realizar petición GET](#realizar-petición-get)
+     - [Realizar petición PUT](#realizar-petición-put)
+     - [Realizar petición POST](#realizar-petición-post)
+     - [Ejecutar prueba de humo](#ejecutar-prueba-de-humo)
+     - [Ejecutar prueba de carga](#ejecutar-prueba-de-carga)
+     - [Ejecutar prueba de estrés](#ejecutar-prueba-de-estrés)
+     - [Ejecutar prueba de picos](#ejecutar-prueba-de-picos)
+     - [Ejecutar prueba de límite operativo](#ejecutar-prueba-de-límite-operativo)
+     - [Comprobar percentil de tiempo de respuesta](#comprobar-percentil-de-tiempo-de-respuesta)
+     - [Comprobar tiempo de respuesta medio](#comprobar-tiempo-de-respuesta-medio)
+     - [Comprobar errores en las peticiones](#comprobar-errores-en-las-peticiones)
+  
 
 ---
 ## Configuración
