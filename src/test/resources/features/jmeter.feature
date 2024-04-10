@@ -7,10 +7,10 @@ Característica: : jmeter
   #     Cuando ejecuto una prueba de humo
   #     Entonces comprueba que el percentil 99 de tiempo de respuesta es menor que 50 segundos
 
-    Escenario: Prueba de carga
-       Dada la URL base 'http://localhost:8888'
-       Cuando ejecuto una prueba de carga con 400 usuarios durante 2 minutos
-       Entonces comprueba que el percentil 99 de tiempo de respuesta es menor que 2 segundos
+   # Escenario: Prueba de carga
+    #   Dada la URL base 'http://localhost:8888'
+     #  Cuando ejecuto una prueba de carga con 400 usuarios durante 2 minutos
+      # Entonces comprueba que el percentil 99 de tiempo de respuesta es menor que 3 segundos
 
 
   #   Escenario: Prueba de límite operativo

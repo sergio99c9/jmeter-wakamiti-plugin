@@ -1,0 +1,13 @@
+wakamiti:
+
+  resourceTypes:
+    - gherkin
+
+  jmeter:
+    output:
+      influxdb:
+        enabled: "false"
+      csv:
+        enabled: "false"
+      html:
+        enabled: "false"

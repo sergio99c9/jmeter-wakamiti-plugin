@@ -31,6 +31,7 @@ import es.iti.wakamiti.api.annotations.Step;
 import es.iti.wakamiti.api.extensions.StepContributor;
 import es.iti.wakamiti.api.util.WakamitiLogger;
 import org.slf4j.Logger;
+import us.abstracta.jmeter.javadsl.core.postprocessors.DslJsonExtractor;
 import us.abstracta.jmeter.javadsl.core.threadgroups.DslDefaultThreadGroup;
 
 
@@ -230,6 +231,23 @@ public class JMeterStepContributor implements StepContributor {
         lastTestStats = DslTestPlan.fromJmx(archivo).run();
 
     }
+    /*
+    @Step(value = "jmeter.extract.regex", args = {"variableName:text", "regex:text"})
+    public void extractRegex(String variableName, String regex){
+        threadGroup.children(regexExtractor(variableName,regex));
+        escenarioBasico = false;
+    }
+    @Step(value = "jmeter.extract.boundaries", args = {"variableName:text", "leftBoundarie:text"," rightBoundarie:text"})
+    public void extractBoundaries(String variableName, String leftBoundarie, String rightBoundarie){
+        threadGroup.children(boundaryExtractor(variableName,leftBoundarie,rightBoundarie));
+        escenarioBasico = false;
+    }
+    @Step(value = "jmeter.extract.json", args = {"variableName:text", "jsonPath:text"})
+    public void extractJson(String variableName, String jsonPath){
+        threadGroup.children(jsonExtractor(variableName,jsonPath).queryLanguage(DslJsonExtractor.JsonQueryLanguage.JSON_PATH));
+        escenarioBasico = false;
+    }
+    */
     @Step(value = "jmeter.test.foamtest")
     public void ejecutarPruebaHumo() throws IOException {
 
