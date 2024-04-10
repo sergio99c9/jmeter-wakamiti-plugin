@@ -18,6 +18,14 @@ Este plugin proporciona un conjunto de pasos para realizar pruebas de rendimient
      - [Realizar petición GET](#realizar-petición-get)
      - [Realizar petición PUT](#realizar-petición-put)
      - [Realizar petición POST](#realizar-petición-post)
+     - [Definir Autenticación Básica con credenciales](#definir-autenticación-básica-con-credenciales)
+     - [Definir Autenticación Básica](#definir-autenticación-básica)
+     - [Deshabilitar cookies](#deshabilitar-cookies)
+     - [Deshabilitar caché](#deshabilitar-caché)
+     - [Establecer timeout de conexión](#establecer-timeout-de-conexión)
+     - [Establecer timeout de respuesta](#establecer-timeout-de-respuesta)
+     - [Descargar recursos asociados](#descargar-recursos-asociados)
+     - [Utilizar un Servidor Proxy](#utilizar-un-servidor-proxy)
      - [Ejecutar prueba de humo](#ejecutar-prueba-de-humo)
      - [Ejecutar prueba de carga](#ejecutar-prueba-de-carga)
      - [Ejecutar prueba de estrés](#ejecutar-prueba-de-estrés)
@@ -222,7 +230,7 @@ Dado un fichero con los siguientes datos 'usuarios.csv' trabajando con las varia
 
 ### Realizar petición GET
 ```
-hago un GET al endpoint {service:text}
+(que) hago un GET al endpoint {service:text}
 ```
 Realiza una petición GET al endpoint especificado.
 
@@ -240,7 +248,7 @@ Realiza una petición GET al endpoint especificado.
 
 ### Realizar petición PUT
 ```
-hago un PUT al endpoint {service:text} con el siguiente mensaje:
+(que) hago un PUT al endpoint {service:text} con el siguiente mensaje:
 ```
 Realiza una petición GET al endpoint especificado.
 
@@ -265,7 +273,7 @@ Realiza una petición GET al endpoint especificado.
 
 ### Realizar petición POST
 ```
-hago un POST al endpoint {service:text} con el siguiente mensaje:
+(que) hago un POST al endpoint {service:text} con el siguiente mensaje:
 ```
 Realiza una petición GET al endpoint especificado.
 
@@ -284,6 +292,149 @@ Realiza una petición GET al endpoint especificado.
         "apellido": "Garcia"
     }
     """
+```
+
+<br /><br />
+
+### Definir Autenticación Básica con credenciales
+```
+(que) el servicio usa autenticación básica con las credenciales {username:text}:{password:text}
+```
+Configura la autenticación básica para las peticiones HTTP que se realicen.
+
+#### Parámetros:
+| Nombre    | Wakamiti type | Descripción              |
+|-----------|---------------|--------------------------|
+| `username`| `text`        | Nombre de usuario        |
+| `password`| `text`        | Contraseña               |
+
+#### Ejemplos:
+```gherkin
+  Dado que el servicio usa autenticación básica con las credenciales 'Mariano' : 'mariano123@'
+```
+
+<br /><br />
+
+### Definir Autenticación Básica 
+```
+(que) el servicio usa autenticación básica
+```
+Configura la autenticación básica para las peticiones HTTP que se realicen con las credenciales configuradas como default.
+
+#### Ejemplos:
+```gherkin
+  Dado que el servicio usa autenticación básica
+```
+
+<br /><br />
+
+### Deshabilitar cookies
+```
+(que) deshabilito las cookies
+```
+Deshabilita el manejo de cookies por parte de JMeter para todas las peticiones HTTP.
+
+#### Ejemplos:
+```gherkin
+  Dado que deshabilito las cookies
+```
+
+<br /><br />
+
+### Deshabilitar caché
+```
+(que) deshabilito la cache
+```
+Deshabilita el almacenamiento en caché de las peticiones HTTP en JMeter.
+
+#### Ejemplos:
+```gherkin
+  Dado que deshabilito la cache
+```
+
+<br /><br />
+
+### Establecer timeout de conexión
+```
+establezco un timeout de conexión de {duracion:int} segundos
+```
+Define un tiempo máximo de espera para establecer una conexión.
+
+#### Parámetros:
+| Nombre    | Wakamiti type | Descripción              |
+|-----------|---------------|--------------------------|
+| `duracion`| `int`         | Duración del timeout     |
+
+#### Ejemplos:
+```gherkin
+  Dado que establezco un timeout de conexión de 30 segundos
+```
+
+<br /><br />
+
+### Establecer timeout de respuesta
+```
+establezco un timeout de respuesta de {duracion:int} minutos
+```
+Define un tiempo máximo de espera para establecer una conexión.
+
+#### Parámetros:
+| Nombre    | Wakamiti type | Descripción              |
+|-----------|---------------|--------------------------|
+| `duracion`| `int`         | Duración del timeout     |
+
+#### Ejemplos:
+```gherkin
+  Dado que establezco un timeout de respuesta de 2 minutos
+```
+
+<br /><br />
+
+### Descargar recursos asociados
+```
+(que) descargo todos los recursos asociados a la URL
+```
+Configura JMeter para que automáticamente descargue los recursos embebidos asociados con las peticiones HTML (por ejemplo, imágenes, scripts, estilos).
+
+#### Ejemplos:
+```gherkin
+  Dado que descargo todos los recursos asociados a la URL
+```
+
+<br /><br />
+
+### Utilizar un Servidor Proxy
+```
+se utiliza un servidor proxy en la URL {URL:text}
+```
+Configura JMeter para enviar todas las peticiones a través de un servidor proxy.
+
+#### Parámetros:
+| Nombre    | Wakamiti type | Descripción              |
+|-----------|---------------|--------------------------|
+| `URL`     | `text`        | URL del servidor proxy   |
+
+#### Ejemplos:
+```gherkin
+  Dado que se utiliza un servidor proxy en la URL 'http://miProxy:8080'
+```
+
+<br /><br />
+
+### Ejecutar Plan de Pruebas JMX
+```
+ejecuto el test plan del archivo JMX {archivo:text}
+```
+Ejecuta un plan de pruebas JMeter especificado en un archivo JMX.
+
+#### Parámetros:
+| Nombre    | Wakamiti type | Descripción              |
+|-----------|---------------|--------------------------|
+| `archivo` | `text`        | Ruta al archivo JMX      |
+
+#### Ejemplos:
+```gherkin
+  When ejecuto el test plan del archivo JMX 'plan.jmx'
 ```
 
 <br /><br />
