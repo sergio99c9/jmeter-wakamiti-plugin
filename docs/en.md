@@ -18,6 +18,15 @@ This plugin provides a set of steps for conducting performance testing using JMe
       - [Perform GET Request](#perform-get-request)
       - [Perform PUT Request](#perform-put-request)
       - [Perform POST Request](#perform-post-request)
+      - [Define Basic Authentication with Credentials](#define-basic-authentication-with-credentials)
+      - [Define Basic Authentication](#define-basic-authentication)
+      - [Disable Cookies](#disable-cookies)
+      - [Disable Cache](#disable-cache)
+      - [Set Connection Timeout](#set-connection-timeout)
+      - [Set Response Timeout](#set-response-timeout)
+      - [Download Associated Resources](#download-associated-resources)
+      - [Use a Proxy Server](#use-a-proxy-server)
+      - [Execute JMX Test Plan](#execute-jmx-test-plan)
       - [Execute Smoke Test](#execute-smoke-test)
       - [Execute Load Test](#execute-load-test)
       - [Execute Stress Test](#execute-stress-test)
@@ -283,6 +292,150 @@ Sends a POST request to the previously defined parameters.
         "lastName": "Gómez"
     }
     """
+```
+
+<br /><br />
+
+
+### Define Basic Authentication with Credentials
+```
+a service uses basic authentication with the credentials {username:text}:{password:text}
+```
+Sets up basic authentication for HTTP requests.
+
+#### Parameters:
+| Name       | Wakamiti type | Description            |
+|------------|---------------|------------------------|
+| `username` | `text`        | Username               |
+| `password` | `text`        | Password               |
+
+#### Examples:
+```gherkin
+  Given a service uses basic authentication with the credentials 'Mariano' : 'mariano123@'
+```
+
+<br /><br />
+
+### Define Basic Authentication
+```
+a service uses basic authentication
+```
+Sets up basic authentication for HTTP requests with default configured credentials.
+
+#### Examples:
+```gherkin
+  Given a service uses basic authentication
+```
+
+<br /><br />
+
+### Disable Cookies
+```
+(that) I disable cookies
+```
+Disables cookie handling by JMeter for all HTTP requests.
+
+#### Examples:
+```gherkin
+   Given that I disable cookies
+```
+
+<br /><br />
+
+### Disable Cache
+```
+(that) I disable the cache
+```
+Disables caching of HTTP requests in JMeter.
+
+#### Ejemplos:
+```gherkin
+ Given that I disable the cache
+```
+
+<br /><br />
+
+### Set Connection Timeout
+```
+I set a connection timeout of {duration:int} seconds
+```
+Defines a maximum wait time for establishing a connection.
+
+#### Parameters:
+| Name       | Wakamiti type | Description            |
+|------------|---------------|------------------------|
+| `duracion` | `int`         | Timeout duration       |
+
+#### Examples:
+```gherkin
+   Given that I set a connection timeout of 30 seconds
+```
+
+<br /><br />
+
+### Set Response  Timeout
+```
+I set a Response  timeout of {duration:int} minutes
+```
+Defines a maximum wait time for receiving a response .
+
+#### Parameters:
+| Name       | Wakamiti type | Description            |
+|------------|---------------|------------------------|
+| `duracion` | `int`         | Timeout duration       |
+
+#### Examples:
+```gherkin
+   Given that I set a response  timeout of 2 minutes
+```
+
+<br /><br />
+
+### Download Associated Resources
+```
+(that) I download all resources associated with the URL
+```
+Configures JMeter to automatically download embedded resources associated with HTML requests (e.g., images, scripts, styles).
+
+#### Examples:
+```gherkin
+   Given that I download all resources associated with the URL
+```
+
+<br /><br />
+
+### Use a Proxy Server
+```
+a proxy server is used at the URL {URL:text}
+```
+Configures JMeter to route all requests through a proxy server.
+
+#### Parameters:
+| Name      | Wakamiti type | Description              |
+|-----------|---------------|--------------------------|
+| `URL`     | `text`        | Proxy server URL         |
+
+#### Examples:
+```gherkin
+    Given that a proxy server is used at the URL 'http://myProxy:8080'
+```
+
+<br /><br />
+
+### Execute JMX Test Plan
+```
+I execute the test plan from the JMX file {archivo:text}
+```
+Runs a JMeter test plan specified in a JMX file.
+
+#### Parameters:
+| Name      | Wakamiti type | Description              |
+|-----------|---------------|--------------------------|
+| `archivo` | `text`        | Path to the JMX file     |
+
+#### Ejemplos:
+```gherkin
+   When I execute the test plan from the JMX file 'plan.jmx'
 ```
 
 <br /><br />
