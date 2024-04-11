@@ -367,7 +367,7 @@ Realiza una petición GET al endpoint especificado y extrae un valor usando una 
 
 #### Ejemplos:
 ```gherkin
-(que) hago un GET al endpoint '/api/usuarios' y extraigo el valor utilizando expresión regular '\d+' y lo almaceno en 'userID'
+  (que) hago un GET al endpoint '/api/usuarios' y extraigo el valor utilizando expresión regular '\d+' y lo almaceno en 'userID'
 ```
 
 <br /><br />
@@ -388,7 +388,7 @@ Realiza una petición GET y extrae un valor delimitado por textos específicos.
 
 #### Ejemplos:
 ```gherkin
-(que) hago un GET al endpoint '/api/usuarios/detalles' y extraigo el valor entre 'id:' y ',' y lo almaceno en 'userID'
+  (que) hago un GET al endpoint '/api/usuarios/detalles' y extraigo el valor entre 'id:' y ',' y lo almaceno en 'userID'
 ```
 
 <br /><br />
@@ -408,7 +408,7 @@ Realiza una petición GET y extrae un valor especificado por un JSON Path.
 
 #### Ejemplos:
 ```gherkin
-(que) hago un GET al endpoint '/api/usuarios/detalles' y extraigo el valor entre 'id:' y ',' y lo almaceno en 'userID'
+  (que) hago un GET al endpoint '/api/usuarios/detalles' y extraigo el valor entre 'id:' y ',' y lo almaceno en 'userID'
 ```
 
 <br /><br />
@@ -427,7 +427,7 @@ Envía una petición PUT utilizando como cuerpo del mensaje el valor de una vari
 
 #### Ejemplos:
 ```gherkin
- (que) hago un PUT al endpoint '/api/usuarios/123' con la variable almacenada 'datosUsuario' como cuerpo del mensaje
+   (que) hago un PUT al endpoint '/api/usuarios/123' con la variable almacenada 'datosUsuario' como cuerpo del mensaje
 ```
 
 <br /><br />
@@ -446,7 +446,7 @@ Envía una petición PUT utilizando como cuerpo del mensaje el valor de una vari
 
 #### Ejemplos:
 ```gherkin
- (que) hago un POST al endpoint '/api/usuarios/123' con la variable almacenada 'datosUsuario' como cuerpo del mensaje
+   (que) hago un POST al endpoint '/api/usuarios/123' con la variable almacenada 'datosUsuario' como cuerpo del mensaje
 ```
 
 <br /><br />
