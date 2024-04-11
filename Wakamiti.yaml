@@ -6,8 +6,8 @@ wakamiti:
   jmeter:
     output:
       influxdb:
-        enabled: "false"
+        enabled: true
       csv:
-        enabled: "false"
+        enabled: true
       html:
-        enabled: "false"
+        enabled: true
