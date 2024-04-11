@@ -20,6 +20,11 @@ Este plugin proporciona un conjunto de pasos para realizar pruebas de rendimient
      - [Realizar petición GET](#realizar-petición-get)
      - [Realizar petición PUT](#realizar-petición-put)
      - [Realizar petición POST](#realizar-petición-post)
+     - [Realizar petición GET y extraer variable con expresión regular](#realizar-petición-get-y-extraer-variable-con-expresión-regular)
+     - [Realizar petición GET y extraer variable con delimitadores](#realizar-petición-get-y-extraer-variable-con-delimitadores)
+     - [Realizar petición GET y extraer variable con JSON Path](#realizar-petición-get-y-extraer-variable-con-json-path)
+     - [Realizar petición PUT con variable extraida](#realizar-petición-put-con-variable-extraida)
+     - [Realizar petición POST con variable extraida](#realizar-petición-post-con-variable-extraida)
      - [Definir Autenticación Básica con credenciales](#definir-autenticación-básica-con-credenciales)
      - [Definir Autenticación Básica](#definir-autenticación-básica)
      - [Deshabilitar cookies](#deshabilitar-cookies)
@@ -40,6 +45,7 @@ Este plugin proporciona un conjunto de pasos para realizar pruebas de rendimient
 
 ---
 
+
 ## Ejecución
 
 Para utilizar el plugin Wakamiti JMeter DSL, de momento se deberá:
@@ -47,6 +53,8 @@ Para utilizar el plugin Wakamiti JMeter DSL, de momento se deberá:
 1. Crea un archivo `.feature` dentro de la carpeta `test/resources/features` y escribe los escenarios que deseas ejecutar.
 2. Ejecución mediante JUnit: Ejecuta las pruebas haciendo clic derecho en la clase `JMeterTest` ubicada en `test/java/es.iti.wakamiti.plugins.jmeter.test` y seleccionando `Run`.
 3. Ejecución mediante Maven: Ejecuta `mvn clean install` desde la consola para iniciar las pruebas.
+
+
 
 
 ## Configuración
@@ -340,6 +348,105 @@ Realiza una petición GET al endpoint especificado.
         "apellido": "Garcia"
     }
     """
+```
+
+<br /><br />
+
+### Realizar petición GET y extraer variable con expresión regular
+```
+(que) hago un GET al endpoint {service:text} y extraigo el valor utilizando expresión regular {regex:text} y lo almaceno en {variableName:text}
+```
+Realiza una petición GET al endpoint especificado y extrae un valor usando una expresión regular, almacenando el resultado en una variable.
+
+#### Parámetros:
+| Nombre         | Wakamiti type | Descripción                                               |
+|----------------|---------------|-----------------------------------------------------------|
+| `service`      | `text`        | Segmento URL                                              |
+| `variableName` | `text`        | Nombre de la variable donde se almacena el valor extraído |
+| `regex`        | `text`        | Expresión regular para extracción                         |
+
+#### Ejemplos:
+```gherkin
+(que) hago un GET al endpoint '/api/usuarios' y extraigo el valor utilizando expresión regular '\d+' y lo almaceno en 'userID'
+```
+
+<br /><br />
+
+### Realizar petición GET y extraer variable con delimitadores
+```
+(que) hago un GET al endpoint {service:text} y extraigo el valor entre {leftBoundary:text} y {rightBoundary:text} y lo almaceno en {variableName:text}
+```
+Realiza una petición GET y extrae un valor delimitado por textos específicos.
+
+#### Parámetros:
+| Nombre         | Wakamiti type | Descripción                                               |
+|----------------|---------------|-----------------------------------------------------------|
+| `service`      | `text`        | Segmento URL                                              |
+| `variableName` | `text`        | Nombre de la variable donde se almacena el valor extraído |
+| `leftBoundary` | `text`        | Delimitador izquierdo                                     |
+| `rightBoundary`| `text`        | Delimitador derecho                                       |
+
+#### Ejemplos:
+```gherkin
+(que) hago un GET al endpoint '/api/usuarios/detalles' y extraigo el valor entre 'id:' y ',' y lo almaceno en 'userID'
+```
+
+<br /><br />
+
+### Realizar petición GET y extraer variable con JSON Path
+```
+(que) hago un GET al endpoint {service:text} y extraigo el valor en el Json Path {jsonPath:text} y lo almaceno en {variableName:text}
+```
+Realiza una petición GET y extrae un valor especificado por un JSON Path.
+
+#### Parámetros:
+| Nombre         | Wakamiti type | Descripción                                               |
+|----------------|---------------|-----------------------------------------------------------|
+| `service`      | `text`        | Segmento URL                                              |
+| `variableName` | `text`        | Nombre de la variable donde se almacena el valor extraído |
+| `jsonPath`     | `text`        | JSON Path para extracción                                 |
+
+#### Ejemplos:
+```gherkin
+(que) hago un GET al endpoint '/api/usuarios/detalles' y extraigo el valor entre 'id:' y ',' y lo almaceno en 'userID'
+```
+
+<br /><br />
+
+### Realizar petición PUT con variable extraida
+```
+(que) hago un PUT al endpoint {service:text} con la variable almacenada {variableName:text} como cuerpo del mensaje
+```
+Envía una petición PUT utilizando como cuerpo del mensaje el valor de una variable previamente extraída.
+
+#### Parámetros:
+| Nombre         | Wakamiti type | Descripción                                               |
+|----------------|---------------|-----------------------------------------------------------|
+| `service`      | `text`        | Segmento URL                                              |
+| `variableName` | `text`        | Nombre de la variable donde se almacena el valor extraído |
+
+#### Ejemplos:
+```gherkin
+ (que) hago un PUT al endpoint '/api/usuarios/123' con la variable almacenada 'datosUsuario' como cuerpo del mensaje
+```
+
+<br /><br />
+
+### Realizar petición POST con variable extraida
+```
+(que) hago un POST al endpoint {service:text} con la variable almacenada {variableName:text} como cuerpo del mensaje
+```
+Envía una petición PUT utilizando como cuerpo del mensaje el valor de una variable previamente extraída.
+
+#### Parámetros:
+| Nombre         | Wakamiti type | Descripción                                               |
+|----------------|---------------|-----------------------------------------------------------|
+| `service`      | `text`        | Segmento URL                                              |
+| `variableName` | `text`        | Nombre de la variable donde se almacena el valor extraído |
+
+#### Ejemplos:
+```gherkin
+ (que) hago un POST al endpoint '/api/usuarios/123' con la variable almacenada 'datosUsuario' como cuerpo del mensaje
 ```
 
 <br /><br />
