@@ -2,7 +2,9 @@ Este plugin proporciona un conjunto de pasos para realizar pruebas de rendimient
 
 ---
 ## Tabla de Contenido
-  1. [Configuración](#configuración)
+
+  1. [Ejecución de pruebas](#ejecución)
+  2. [Configuración](#configuración)
      - [jmeter.baseURL](#jmeterbaseurl)
      - [Salidas del plugin](#salidas-del-plugin)
        - [jmeter.output.influxdb.enabled](#jmeteroutputinfluxdbenabled)
@@ -37,7 +39,34 @@ Este plugin proporciona un conjunto de pasos para realizar pruebas de rendimient
   
 
 ---
+
+## Ejecución
+
+Para utilizar el plugin Wakamiti JMeter DSL, de momento se deberá:
+
+1. Crea un archivo `.feature` dentro de la carpeta `test/resources/features` y escribe los escenarios que deseas ejecutar.
+2. Ejecución mediante JUnit: Ejecuta las pruebas haciendo clic derecho en la clase `JMeterTest` ubicada en `test/java/es.iti.wakamiti.plugins.jmeter.test` y seleccionando `Run`.
+3. Ejecución mediante Maven: Ejecuta `mvn clean install` desde la consola para iniciar las pruebas.
+
+
 ## Configuración
+
+Para configurar las salidas y diferentes opciones del plugin, de momento se deberá modificar el archivo JMeterConfigContributor.java ubicado dentro de 'src/main/java/es.iti.wakamiti.plugin.jmeter'. Ahí se pueden ajustar las propiedades según tus necesidades modificando la Configuration DEFAULTS
+```
+ private static final Configuration DEFAULTS = Configuration.factory().fromPairs(
+    BASE_URL, "http://localhost:8080",
+    RESULTSTREE_ENABLED, "true",
+    INFLUXDB_ENABLED, "false",
+    CSV_ENABLED, "false",
+    HTML_ENABLED, "false",
+    INFLUXDB_URL, "http://localhost:8086/write?db=jmeter",
+    CSV_PATH, "./test-results.csv",
+    HTML_PATH, "./test-results.html"
+);
+```
+En este caso habría como única salida el Results Tree de JMeter. 
+
+A continuación se explicarán en detalle cada una de las salidas y configuraciones:
 
 ###  `jmeter.baseURL`
 Establece la URL base para las pruebas de JMeter, donde se definirá el punto de inicio para todas las llamadas HTTP que se realizen. 
@@ -167,6 +196,25 @@ jmeter:
     html:
       path: ./resultadosDePruebas/pruebas-html
 ```
+
+<br /><br />
+
+### `jmeter.output.resultstree.enabled`
+Habilita la aparición del Results Tree de JMeter, que te permite revisar todas las peticiones ý respuestas HTTP en detalle.
+
+Valor por defecto:
+```
+ `false`
+```
+
+Ejemplo:
+```yaml
+jmeter:
+  output:
+    resultstree:
+      enabled: true
+```
+
 
 ---
 ## Pasos
